@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+option csharp_namespace = "Timetable.SERVER.Protos";
+
+import "google/protobuf/empty.proto";
+import "protos/request.proto";
+
+package phonghoc;
+
+service PhongHoc{
+    rpc DSPhongHoc (google.protobuf.Empty) returns (DanhSachPhongHoc);
+    rpc GetPhongHoc (request.RequestID) returns (PhongHocData);
+    rpc insertPhongHoc (PhongHocData) returns (request.StatusResponse);
+    rpc updatePhongHoc (PhongHocData) returns (request.StatusResponse);
+    rpc deletePhongHoc (request.RequestID) returns (request.StatusResponse);
+    rpc DSNhaHoc (google.protobuf.Empty) returns (DanhSachNhaHoc);
+    rpc insertNhaHoc (NhaHocData) returns (request.StatusResponse);
+    rpc updateNhaHoc (NhaHocData) returns (request.StatusResponse);
+    rpc deleteNhaHoc (request.RequestID) returns (request.StatusResponse);
+}
+
+message PhongHocData{
+          int32 id_phong_hoc = 1;
+          string ten_phong_hoc = 2;
+          int32 suc_chua = 3;
+          int32 id_nha_hoc = 4;
+}
+
+message DanhSachPhongHoc{
+	repeated PhongHocData listPhongHoc = 1;
+}
+
+message NhaHocData{
+    int32 id_nha_hoc = 1;
+    string ten_nha_hoc =2;
+    string vitri = 3;
+    string sdt = 4;
+}
+
+message DanhSachNhaHoc{
+    repeated NhaHocData listNhaHoc = 1;
+}

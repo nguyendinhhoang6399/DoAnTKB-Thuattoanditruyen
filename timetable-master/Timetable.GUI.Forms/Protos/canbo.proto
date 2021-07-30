@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+option csharp_namespace = "Timetable.SERVER.Protos";
+
+import "google/protobuf/empty.proto";
+import "protos/request.proto";
+
+package canbo;
+
+// The greeting service definition.
+service CanBo{
+  // Sends a greeting
+  rpc FindCanBo (FindCanBoRequest) returns (CanBoData);
+  rpc FindCanBoDV (request.RequestID) returns (DanhSachCanBo);
+  rpc DSCanBo (google.protobuf.Empty) returns (DanhSachCanBo);
+  rpc DSTonGiao (google.protobuf.Empty) returns (DanhSachTonGiao);
+  rpc TonGiaoInfo (request.RequestID) returns (TonGiao);
+  rpc DSDanToc (google.protobuf.Empty) returns (DanhSachDanToc);
+  rpc DanTocInfo (request.RequestID) returns (DanToc);
+  //Login
+  rpc Login (request.RequestLogin) returns (CanBoData);
+  //
+  rpc insertCanBo (CanBoData) returns (request.StatusResponse);
+  rpc updateCanBo (CanBoData) returns (request.StatusResponse);
+  rpc deleteCanBo (request.RequestID) returns (request.StatusResponse);
+}
+
+// The request message containing the user's name.
+message CanBoData {
+  int32 id_can_bo = 17;
+  string macanbo = 1;
+  string tencanbo = 2;
+  int32 gioitinh = 3;
+  string ngaysinh = 4;
+  string sdt= 5 ;
+  string di_dong= 6;
+  string email= 7 ;
+  string dia_chi= 8;
+  string avatar= 9;
+  string username= 10;
+  string password=11 ;
+  string quyen_dac_biet= 12;
+  int32 is_active= 13;
+  int32 trang_thai= 14;
+  DanToc dan_toc= 15;
+  TonGiao ton_giao= 16;
+}
+
+// The response message containing the greetings.
+message FindCanBoRequest {
+  int32 idcanbo = 1;
+}
+
+message DanhSachCanBo{
+	repeated CanBoData listCanBo = 1;
+}
+
+message TonGiao{
+	int32 ma_ton_giao = 1;
+	string ten_ton_giao = 2;
+}
+
+message DanToc{
+	int32 ma_dan_toc = 1;
+	string ten_dan_toc = 2;
+}
+
+message DanhSachTonGiao{
+	repeated TonGiao listTonGiao = 1;
+}
+message DanhSachDanToc{
+	repeated DanToc listDanToc = 1;
+}

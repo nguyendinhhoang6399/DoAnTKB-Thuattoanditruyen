@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+option csharp_namespace = "Timetable.SERVER.Protos";
+
+import "google/protobuf/empty.proto";
+import "protos/khht.proto";
+import "protos/request.proto";
+
+package timeslot;
+
+service Timeslot{
+	rpc DSThu (google.protobuf.Empty) returns (DanhSachThu);
+	rpc DSTietHoc (google.protobuf.Empty) returns (DanhSachTietHoc);
+	rpc listTimeslot (google.protobuf.Empty) returns (DanhSachTimeslot);
+	rpc listTBP (google.protobuf.Empty) returns (ListTimeBusyProf);
+	rpc listTimeBusyProf (request.RequestID) returns (ListTimeBusyProf);
+	rpc listTBR (google.protobuf.Empty) returns (ListTimeBusyRoom);
+	rpc gethocki (khht.requestIDHK) returns (HocKi);
+	rpc gethockiByID (request.RequestID) returns (HocKi);
+}
+message Thu{
+	int32 id_thu = 1;
+	string thu = 2;
+}
+message Tiet{
+	int32 id_tiet = 1;
+	string tiet = 2;
+	string tg_bat_dau = 3;
+	string tg_ket_thuc = 4;
+	int32 so_phut = 5;
+}
+message TimeslotData{
+	int32 timeslotID =1;
+	Thu vThu = 2;
+	Tiet vTiet = 3;
+}
+
+message DanhSachTimeslot{
+	repeated TimeslotData lst = 1;
+}
+
+message DanhSachThu{
+	repeated Thu listThu = 1;
+}
+
+message DanhSachTietHoc{
+	repeated Tiet listTiet = 1;
+}
+
+message HocKi{
+	int32 id__hoc__ki=1;
+	int32 hoc__ki = 2;
+	string nam__hoc = 3;
+	string tg_bat_dau = 4;
+	string tg_ket_thuc = 5;
+}
+
+message TimeBusyProf{
+	int32 id_can_bo = 1;
+	int32 id_tiet = 2;
+	int32 id_thu = 3;
+	string ly_do = 4;
+}
+message ListTimeBusyProf{
+	repeated TimeBusyProf listTimeBusyProf = 1;
+}
+message TimeBusyRoom{
+	int32 id_phong_hoc = 1;
+	int32 id_tiet = 2;
+	int32 id_thu = 3;
+	string ly_do = 4;
+}
+
+message ListTimeBusyRoom{
+	repeated TimeBusyRoom listTimeBusyRoom = 1;
+}

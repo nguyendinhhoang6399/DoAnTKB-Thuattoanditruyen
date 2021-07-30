@@ -1,0 +1,325 @@
+﻿@model Timetable.SERVER.Protos.DanhSachKHHT
+@using Timetable.GUI.Web.Service
+@{
+    Layout = "_Layout";
+    int year = DateTime.Now.Year - 5;
+    int hk = 1;
+    string nh = "2016 - 2017";
+    if (Model != null)
+    {
+        //hk = TimeslotService.getHocKi(Model.ListKHHT[0].IdHocKi).HocKi_;
+        //nh = TimeslotService.getHocKi(Model.ListKHHT[0].IdHocKi).NamHoc;
+        hk = (int)ViewData["hocki"];
+        nh = ViewData["namhoc"].ToString();
+    }
+
+}
+@section styleOption{
+    <!-- Tempusdominus Bbootstrap 4 -->
+    <link rel="stylesheet" href="/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <!-- Bootstrap4 Duallistbox -->
+    <link rel="stylesheet" href="/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+}
+<div class="content-header">
+    <div class="container">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark"> Cập nhật kế hoạch học tập</h1>
+            </div><!-- /.col -->
+
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <!-- /.card-header -->
+                    <div class="card-header">
+                        <form asp-action="khht" asp-controller="Student" method="get">
+                            <div class="row justify-content-center">
+                                <h5>Chọn học kì&emsp;</h5>
+                                <select id="hocki" name="hocki">
+                                    @for (int i = 1; i < 4; i++)
+                                    {
+                                        if (hk == i)
+                                        {
+                                            <option value="@i" selected>@i</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    }
+                                </select>
+                                <h5>&emsp;-- Năm học &emsp;</h5>
+                                <select id="namhoc" name="namhoc">
+                                    @for (int i = 0; i < 9; i++)
+                                    {
+                                        year += 1;
+                                        int currentYear = year + 1;
+                                        string valueYear = year + " - " + currentYear;
+                                        if (nh == valueYear)
+                                        {
+                                            <option selected value="@valueYear">
+                                                @valueYear
+                                            </option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@valueYear">
+                                                @valueYear
+                                            </option>
+                                        }
+                                    }
+                                </select>
+                                &emsp;
+                                <button class="btn btn-primary">Liệt kê</button>
+                            </div>
+                        </form>
+                        <hr />
+                        <a class="btn btn-outline-primary" href="#" data-toggle="modal" data-target="#modal_add">Thêm mới</a>
+                    </div>
+                    <div class="card-body">
+                        @if (Model == null || Model.ListKHHT.Count == 0)
+                        {
+                            <h3 class="card-title">Học kì chưa được sắp kế hoạch học tập</h3>
+                        }
+                        else
+                        {
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Mã học phần</th>
+                                        <th>Tên học phần</th>
+                                        <th>Số tín chỉ</th>
+                                        <th>Năm học</th>
+                                        <th>Học kì</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.ListKHHT)
+                                    {
+                                        var idkhht = item.IdThkhht;
+                                        var hocki = TimeslotService.getHocKi(item.IdHocKi);
+                                        <tr>
+                                            <td>@item.MaHocPhan</td>
+                                            <td>@item.TenHocPhan</td>
+                                            <td>@item.SoTinChi</td>
+                                            <td>@hocki.NamHoc</td>
+                                            <td>@hocki.HocKi_</td>
+                                            <td>
+                                                <a href="#" data-toggle="modal" data-target="#delete_@idkhht"><i class="fas fa-trash"></i>Xóa</a>
+                                                ||<a href="#" data-toggle="modal" data-target="#update_@idkhht"><i class="fas fa-edit"></i>Cập nhật</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+
+                            @foreach (var item in Model.ListKHHT)
+                            {
+                                var mahocphan = item.MaHocPhan.Trim();
+                                var idkhht = item.IdThkhht;
+                                <!--Modal xóa khht-->
+                                <div class="modal fade" id="delete_@idkhht">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Xác nhận xóa</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Xóa học phần @mahocphan trong kế hoạch học tập.</p>
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                                                <form asp-action="DeleteKHHT" asp-controller="Student" asp-route-id="@idkhht" method="post">
+                                                    <button type="submit" class="btn btn-primary">Xóa</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div> <!-- /.modal -->
+                                <!--Modal update khht-->
+                                <div class="modal fade" id="update_@idkhht">
+                                    <div class="modal-dialog">
+                                        <form asp-action="UpdateKHHT" asp-controller="Student" asp-route-id="@idkhht" method="post">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Cập nhật học kì năm học</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Cập nhật kế hoạch học phần @mahocphan</p>
+                                                    <div class="row">
+                                                        <h4>Chọn học kì&emsp;</h4>
+                                                        <select id="u_hocki" name="u_hocki">
+                                                            @for (int i = 1; i < 4; i++)
+                                                            {
+                                                                if (hk == i)
+                                                                {
+                                                                    <option value="@i" selected>@i</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@i">@i</option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                        <h4>&emsp;-- Năm học &emsp;</h4>
+                                                        <select id="u_namhoc" name="u_namhoc">
+                                                            @for (int i = 0; i < 9; i++)
+                                                            {
+                                                                int y = DateTime.Now.Year - 4;
+                                                                y += i;
+                                                                int currentYear = y + 1;
+                                                                string valueYear = y + " - " + currentYear;
+                                                                if (nh == valueYear)
+                                                                {
+                                                                    <option selected value="@valueYear">
+                                                                        @valueYear
+                                                                    </option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@valueYear">
+                                                                        @valueYear
+                                                                    </option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer justify-content-between">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+
+                                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div> <!-- /.modal -->
+
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal thêm học phần vào kế hoạch học tập-->
+<div class="modal fade" id="modal_add">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Cập nhật kế hoạch học tập</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="AddKHHT" asp-controller="Student" method="post">
+
+                <div class="modal-body">
+                    <p>Thêm học phần vào KHHT học kì: <b>@hk </b> - Năm học: <b>@nh</b> </p>
+                    <div class="form-group">
+                        <label>Chọn học phần: </label>
+                        <select class="form-control select2" style="width:100%; height:100%" name="mahocphan" id="mahocphan">
+                            @{
+                                var listHP = HocPhanService.GetListHocPhan();
+                                foreach (var item in listHP.ListHocPhan)
+                                {
+                                    var mahp = item.MaHocPhan.Trim();
+                                    if (Model != null && Model.ListKHHT.Where(x => x.MaHocPhan.Trim() == mahp).Count() > 0)
+                                    {
+                                        <option value="@mahp" disabled="disabled">@mahp - @item.TenHocPhan</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@mahp">@mahp - @item.TenHocPhan</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                    <p><input type="checkbox" name="caithien" id="caithien" value="1"/> Cải thiện</p>
+                    @Html.ValidationSummary(true, null, new { @class = "text-danger " })
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary" >Thêm</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div> <!-- /.modal -->
+@section Datatable{
+    <!-- DataTables -->
+    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="/plugins/select2/js/select2.full.min.js"></script>
+
+    <script src="/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+    <!-- InputMask -->
+    <script src="/plugins/moment/moment.min.js"></script>
+    <script src="/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <!-- date-range-picker -->
+    <script src="/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- bootstrap color picker -->
+    <script src="/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- Bootstrap Switch -->
+    <script src="/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="/dist/js/demo.js"></script>
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+            });
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        });
+    </script>
+
+
+}
+
+

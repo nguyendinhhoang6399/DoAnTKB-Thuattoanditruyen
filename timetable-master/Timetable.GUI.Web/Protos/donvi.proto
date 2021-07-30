@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+option csharp_namespace = "Timetable.SERVER.Protos";
+
+import "google/protobuf/empty.proto";
+import "protos/request.proto";
+package donvi;
+
+service DonVi{
+    rpc DSDonVi (request.RequestID) returns (DanhSachDonVi);
+    rpc DSBoMon (request.RequestID) returns (DanhSachDonVi);
+    rpc DSAllDonVi (google.protobuf.Empty) returns (DanhSachDonVi);
+    rpc DonViInfo (request.RequestID) returns (DonViData);
+}
+
+message DonViData{
+	int32 ma_don_vi = 1;
+    string ma_dinh_danh = 2;
+    string ten_don_vi = 3;
+    string dia_chi = 4;
+    string email = 5;
+    string sdt = 6;
+    string fax = 7;
+    string domain = 8;
+    string gioi_thieu = 9;
+    int32 ma_don_vi_cha = 10;
+    string ngay_thanh_lap = 11;
+    int32 id_loai_don_vi = 12;
+}
+
+message DanhSachDonVi{
+    repeated DonViData listDonVi =1;
+}

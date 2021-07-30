@@ -1,0 +1,273 @@
+﻿@model Timetable.SERVER.Protos.Timetables
+@using Timetable.GUI.Web.Service
+@using Timetable.GUI.Web.Session
+@{
+    if (Users.PERMISSION.Equals("Sinh viên"))
+        Layout = "_Layout";
+    else Layout = "_LayoutTeacher";
+    int hk = 1;
+    string nh = DateTime.Now.Year + " - " + (DateTime.Now.Year + 1);
+    if (Model != null)
+    {
+        //hk = TimeslotService.getHocKi(Model.ListKHHT[0].IdHocKi).HocKi_;
+        //nh = TimeslotService.getHocKi(Model.ListKHHT[0].IdHocKi).NamHoc;
+        hk = (int)ViewData["hocki"];
+        nh = ViewData["namhoc"].ToString();
+    }
+    int stt = 1;
+    int kihieu = 1;
+    string tennhom = "";
+    string mahp = "";
+}
+
+@section styleOption{
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.bootstrap4.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+}
+<div class="content-header">
+    <div class="container">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Danh sách lớp học phần</h1>
+            </div><!-- /.col -->
+
+        </div><!-- /.row -->
+        <div class="row mb-2">
+            <div class="col-sm-12 justify-content-center">
+                <form asp-action="DMThoiKhoaBieu" asp-controller="HocPhan" method="get">
+                    <div class="row justify-content-center">
+                        <h5>Chọn học kì&emsp;</h5>
+                        <select id="hocki" name="hocki">
+                            @for (int i = 1; i < 4; i++)
+                            {
+                                if (hk == i)
+                                {
+                                    <option value="@i" selected>@i</option>
+                                }
+                                else
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            }
+                        </select>
+                        <h5>&emsp;-- Năm học &emsp;</h5>
+                        <select id="namhoc" name="namhoc">
+                            @for (int i = 0; i < 4; i++)
+                            {
+                                int year = DateTime.Now.Year - 2 + i;
+                                int currentYear = year + 1;
+                                string valueYear = year + " - " + currentYear;
+                                if (nh == valueYear)
+                                {
+                                    <option selected value="@valueYear">
+                                        @valueYear
+                                    </option>
+                                }
+                                else
+                                {
+                                    <option value="@valueYear">
+                                        @valueYear
+                                    </option>
+                                }
+                            }
+                        </select>
+                        &emsp;
+                        <button class="btn btn-primary">Liệt kê</button>
+                    </div>
+                </form>
+            </div><!-- /.col -->
+
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        @if (Model == null || Model.Tkb.Count == 0)
+                        {
+                            <h3 class="card-title">Học kì chưa được sắp xếp thời khóa biểu</h3>
+                        }
+                        else
+                        {
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Mã HP</th>
+                                        <th>Ký hiệu</th>
+                                        <th>Tên học phần</th>
+                                        <th>Thứ</th>
+                                        <th>Tiết BĐ</th>
+                                        <th>Số tiết</th>
+                                        <th>Phòng</th>
+                                        <th>Sỉ số</th>
+                                        <th>Lớp học phần</th>
+                                        <th>Tuần học</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Tkb)
+                                    {
+
+                                        var hocki = TimeslotService.getHocKi(item.IdHocKi);
+                                        var thu = item.IdThu + 1;
+                                        var nhomhp = NhomHocPhanService.GetInfoNhomHP(item.MaNhomHp);
+                                        if (!mahp.Equals(item.MaHocPhan))
+                                        {
+                                            kihieu = 1;
+                                            mahp = item.MaHocPhan;
+                                            tennhom = item.TenNhomHp;
+                                        }
+                                        if (!tennhom.Equals(item.TenNhomHp) && mahp.Equals(item.MaHocPhan))
+                                        {
+                                            kihieu++;
+                                            tennhom = item.TenNhomHp;
+                                        }
+                                        <tr>
+                                            <td>@stt</td>
+                                            <td>@item.MaHocPhan</td>
+                                            <td>@kihieu</td>
+                                            <td>@item.TenHocPhan</td>
+                                            <td>@thu</td>
+                                            <td>@item.IdTiet</td>
+                                            <td>@item.SoTiet</td>
+                                            <td>@item.TenPhongHoc</td>
+                                            <td>@nhomhp.SiSo</td>
+                                            <td>@nhomhp.TenNhomHp</td>
+                                            <td>123456789012345****</td>
+
+                                        </tr>
+                                        stt += 1;
+
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Datatable{
+    <!-- DataTables -->
+    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <!-- DataTables -->
+    <script src="/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="/plugins/datatables-buttons/js/buttons.flash.min.js"></script>
+    <script src="/plugins/datatables-buttons/js/jszip.min.js"></script>
+    <script src="/plugins/datatables-buttons/js/pdfmake.min.js"></script>
+    <script src="/plugins/datatables-buttons/js/vfs_fonts.js"></script>
+    <script src="/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <!-- AdminLTE App -->
+    <!-- AdminLTE for demo purposes -->
+    <script src="/dist/js/demo.js"></script>
+    <script>
+        $(function () {
+            var title = 'DMHP_HK_' + @ViewData["hocki"]+'_'+@ViewData["namhoc"];
+            $("#example1").DataTable({
+                "dom": 'Bfrtip',
+                "buttons": [
+                    'copyHtml5',
+                    {
+                        "extend": 'excelHtml5',
+                        "text": 'Excel',
+                        "title": 'DMHP_HK_@ViewData["hocki"]_@ViewData["namhoc"]',
+                        "sheetName": 'DMHP_HK_@ViewData["hocki"]_@ViewData["namhoc"]',
+                        "messageTop": 'Danh mục học phần học kì @ViewData["hocki"]_@ViewData["namhoc"]',
+                        "exportOptions": {
+                            "modifier": {
+                                "selected": null
+                            }
+                        }
+                    },
+                    'csvHtml5',
+                    {
+                        "extend": 'pdfHtml5',
+                        "text": 'PDF',
+                        "title": 'Timetale',
+                        "exportOptions": {
+                            "modifier": {
+                                "selected": null
+                            }
+                        }
+                    },
+                    {
+                        "extend": 'print',
+                        "text": 'In tất cả',
+                        "title": 'Timetale',
+                        "exportOptions": {
+                            "modifier": {
+                                "selected": null
+                            }
+                        },
+                        "customize": function (win) {
+                            $(win.document.body).find('table').addClass('display').css('font-size', '12px');
+                            $(win.document.body).find('tr:nth-child(odd) td').each(function (index) {
+                                $(this).css('background-color', '#D0D0D0');
+                            });
+                            $(win.document.body).find('h1').css('text-align', 'center');
+                        }
+                    }
+                ],
+                "select": true,
+                "responsive": true,
+                "autoWidth": false,
+                "language": {
+                    "lengthMenu": "Hiển thị _MENU_",
+                    "zeroRecords": "Không tìm thấy",
+                    "info": "Hiển thị trang _PAGE_/_PAGES_",
+                    "infoEmpty": "Không có dữ liệu",
+                    "emptyTable": "Không có dữ liệu",
+                    "infoFiltered": "(tìm kiếm trong tất cả _MAX_ mục)",
+                    "sSearch": "Tìm kiếm",
+                    "paginate": {
+                        "first": "Đầu",
+                        "last": "Cuối",
+                        "next": "Sau",
+                        "previous": "Trước"
+                    }
+                }
+            });
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+                "language": {
+                    "lengthMenu": "Hiển thị _MENU_",
+                    "zeroRecords": "Không tìm thấy",
+                    "info": "Hiển thị trang _PAGE_/_PAGES_",
+                    "infoEmpty": "Không có dữ liệu",
+                    "emptyTable": "Không có dữ liệu",
+                    "infoFiltered": "(tìm kiếm trong tất cả _MAX_ mục)",
+                    "sSearch": "Tìm kiếm",
+                    "paginate": {
+                        "first": "Đầu",
+                        "last": "Cuối",
+                        "next": "Sau",
+                        "previous": "Trước"
+                    }
+                }
+            });
+        });
+
+    </script>
+}

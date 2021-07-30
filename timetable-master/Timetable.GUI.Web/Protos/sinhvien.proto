@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+option csharp_namespace = "Timetable.SERVER.Protos";
+
+import "google/protobuf/empty.proto";
+import "protos/request.proto";
+
+package sinhvien;
+
+// The greeting service definition.
+service SinhVien{
+  // Sends a greeting
+  rpc GetSinhVien (request.RequestMaSo) returns (SinhVienData);
+  rpc GetListSinhVienOfClass (request.RequestMaSo) returns (DanhSachSinhVien);
+  rpc GetListAllSinhVien (google.protobuf.Empty) returns (DanhSachSinhVien);
+  //Login
+  rpc LoginSV (request.RequestLogin) returns (SinhVienData);
+  //
+  rpc insertSinhVien (SinhVienData) returns (request.StatusResponse);
+  rpc updateSinhVien (SinhVienData) returns (request.StatusResponse);
+  rpc deleteSinhVien (request.RequestMaSo) returns (request.StatusResponse);
+}
+
+// The request message containing the user's name.
+message SinhVienData {
+  string ma_sinh_vien = 1;
+  string ten_sinh_vien = 2;
+  int32 gioi_tinh = 3;
+  string ngay_sinh = 4;
+  string sdt= 5 ;
+  string di_dong= 6;
+  string email= 7 ;
+  string dia_chi= 8;
+  string avatar= 9;
+  string username= 10;
+  string password=11 ;
+  int32 is_active= 12;
+ int32 ma_dan_toc= 13;
+  int32 ma_ton_giao= 14;
+  string ma_nganh =15;
+}
+
+// The response message containing the greetings.
+
+message DanhSachSinhVien{
+	repeated SinhVienData listSinhVien = 1;
+}
+

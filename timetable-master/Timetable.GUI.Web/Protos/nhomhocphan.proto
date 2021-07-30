@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+option csharp_namespace = "Timetable.SERVER.Protos";
+
+import "google/protobuf/empty.proto";
+import "protos/request.proto";
+import "protos/khht.proto";
+
+package nhomhocphan;
+
+service NhomHocPhan{
+    rpc GetInfoNhomHP (request.RequestID) returns (NhomHPData);
+    rpc DSNhomHP (khht.requestIDHK) returns (DanhSachNhomHP);
+    rpc DelNhomHP (khht.requestIDHK) returns (request.StatusResponse);
+    rpc DeleteNhomHP (request.RequestID) returns (request.StatusResponse);
+    rpc InsertNhomHP (NhomHPData) returns (request.StatusResponse);
+    rpc UpdateNhomHP (NhomHPData) returns (request.StatusResponse);
+}
+message NhomHPData{
+         int32 ma_nhom_hp  = 1;
+         string ma_hoc_phan  = 2;
+         string ten_nhom_hp  = 3;
+         int32 tong_tiet_hoc  = 4;
+         int32 tong_buoi_hoc  = 5;
+         int32 si_so  = 6;
+         int32 id_hoc_ki = 7;
+}
+
+message DanhSachNhomHP{
+	repeated NhomHPData listNhomHP = 1;
+}
+

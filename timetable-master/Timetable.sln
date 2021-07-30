@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30503.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{D511B863-4E79-4E9A-9F93-C1571BFCBD63}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timetable.SERVER", "Timetable.SERVER\Timetable.SERVER.csproj", "{91D4268A-5F8A-40A1-B8C3-5C82A25CF87F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientTest", "ClientTest\ClientTest.csproj", "{B4409648-299D-4292-BF19-A0E7246407DE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timetable.GUI.Forms", "Timetable.GUI.Forms\Timetable.GUI.Forms.csproj", "{9A81B714-4552-411C-86E2-0E09DBA8D4D2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timetable.GUI.Web", "Timetable.GUI.Web\Timetable.GUI.Web.csproj", "{F242E428-6E52-4115-BA97-82CDDACE4AC2}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "TimeTableNDH", "setup\TimeTableNDH\TimeTableNDH.vdproj", "{4AAD06D3-5D3C-4CE1-B470-EE611FFA4849}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D511B863-4E79-4E9A-9F93-C1571BFCBD63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D511B863-4E79-4E9A-9F93-C1571BFCBD63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D511B863-4E79-4E9A-9F93-C1571BFCBD63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D511B863-4E79-4E9A-9F93-C1571BFCBD63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91D4268A-5F8A-40A1-B8C3-5C82A25CF87F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91D4268A-5F8A-40A1-B8C3-5C82A25CF87F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91D4268A-5F8A-40A1-B8C3-5C82A25CF87F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91D4268A-5F8A-40A1-B8C3-5C82A25CF87F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4409648-299D-4292-BF19-A0E7246407DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4409648-299D-4292-BF19-A0E7246407DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4409648-299D-4292-BF19-A0E7246407DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4409648-299D-4292-BF19-A0E7246407DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A81B714-4552-411C-86E2-0E09DBA8D4D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A81B714-4552-411C-86E2-0E09DBA8D4D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A81B714-4552-411C-86E2-0E09DBA8D4D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A81B714-4552-411C-86E2-0E09DBA8D4D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F242E428-6E52-4115-BA97-82CDDACE4AC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F242E428-6E52-4115-BA97-82CDDACE4AC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F242E428-6E52-4115-BA97-82CDDACE4AC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F242E428-6E52-4115-BA97-82CDDACE4AC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AAD06D3-5D3C-4CE1-B470-EE611FFA4849}.Debug|Any CPU.ActiveCfg = Debug
+		{4AAD06D3-5D3C-4CE1-B470-EE611FFA4849}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B48FDAB3-C6DD-4C3E-A776-F65948372E51}
+	EndGlobalSection
+EndGlobal

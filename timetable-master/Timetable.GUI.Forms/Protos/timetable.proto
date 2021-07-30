@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+option csharp_namespace = "Timetable.SERVER.Protos";
+
+
+import "google/protobuf/empty.proto";
+import "protos/request.proto";
+import "protos/khht.proto";
+
+package Timetable;
+
+service Timetable{
+	rpc listTimetable (khht.requestIDHK) returns (Timetables);
+	rpc TimetableOfTeacher (RequestTimetableTeacher) returns (Timetables);
+	rpc TimetableOfRoom (RequestTimetableTeacher) returns (Timetables);
+	rpc insertTimetable (TimetableData) returns (request.StatusResponse);
+	rpc deleteTimetable (request.RequestID) returns (request.StatusResponse);
+	rpc deleteAllTimetable (khht.requestIDHK) returns (request.StatusResponse);
+	rpc updateTimetable (TimetableData) returns (request.StatusResponse);
+	rpc getInfoTimetable (RequestGetInfoTimetable) returns (TimetableData);
+	rpc getInfoTimetableById (request.RequestID) returns (TimetableData);
+}
+
+message TimetableData{
+	int32 id_timetable = 1;
+	int32 ma_nhom_hp = 2;
+	int32 id_tiet = 3;
+	int32 id_thu = 4;
+	int32 id_phong_hoc = 5;
+	int32 id_can_bo = 6;
+	int32 id_hoc_ki = 7;
+	int32 so_tiet = 8;
+	int32 vi_pham = 9;
+	string ma_hoc_phan =10;
+	string ten_hoc_phan =11;
+	int32 so_tc =12;
+	string ten_phong_hoc =13;
+	string ten_nhom_hp =14;
+}
+
+message Timetables{
+	repeated TimetableData tkb = 1;
+}
+
+message RequestGetInfoTimetable{
+	int32 ma_nhom_hp = 1;
+	int32 tiet = 2;
+	int32 thu = 3;
+}
+message RequestTimetableTeacher{
+	request.RequestID id_can_bo = 1;
+	khht.requestIDHK hoc_ki = 2;
+}

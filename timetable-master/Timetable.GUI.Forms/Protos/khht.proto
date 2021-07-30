@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option csharp_namespace = "Timetable.SERVER.Protos";
+import "google/protobuf/empty.proto";
+
+package khht;
+
+service KHHT{
+	rpc DSTongHopKHHT (requestIDHK) returns (DanhSachKHHT);
+}
+
+message KHHTData{
+	int32 id_thkhht = 1;
+	string ma_hoc_phan = 2;
+	string ten_hoc_phan = 3;
+	int32 so_tin_chi = 4;
+	int32 so_tiet_moi_tuan = 5;
+	int32 so_buoi_moi_tuan = 6;
+	int32 si_so = 7;
+	int32 so_luong_dk = 8;
+	int32 id_hoc_ki = 9;
+}
+
+message DanhSachKHHT{
+	repeated KHHTData listKHHT = 1;
+}
+
+message requestIDHK{
+	int32 hoc_ki = 1;
+	string nam_hoc =2;
+}

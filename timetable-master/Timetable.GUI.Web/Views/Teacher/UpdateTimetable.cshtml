@@ -1,0 +1,89 @@
+﻿@model Timetable.SERVER.Protos.TimetableData
+@using Timetable.GUI.Web.Service
+@{
+    Layout = "_LayoutTeacher";
+    var ss = NhomHocPhanService.GetInfoNhomHP(Model.MaNhomHp).SiSo;
+    var listRoom = PhongHocService.GetListPhongHoc().ListPhongHoc.Where(x => x.SucChua >= ss).ToList();
+    var hocki = (int)ViewData["hocki"];
+    var namhoc = ViewData["namhoc"].ToString();
+}
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="modal-content">
+                            <form asp-action="UpdateTimetable" asp-controller="Teacher" method="post">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Cập nhật lịch giảng dạy</h4>
+
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" id="idtimetable" name="idtimetable" value="@Model.IdTimetable" />
+                                    <input type="hidden" id="sotiet" name="sotiet" value="@Model.SoTiet" />
+                                    <p>Học phần <b>@Model.MaHocPhan.Trim()</b> - <b> @Model.TenHocPhan</b></p>
+                                    <p>Phòng học <b>@Model.TenPhongHoc</b></p>
+                                    <p>Thứ <b>@(Model.IdThu+1)</b> - Tiết bắt đầu <b>@Model.IdTiet</b> - Số tiết <b>@Model.SoTiet</b></p>
+                                    <p>
+                                        Cập nhật lịch mới:  &nbsp;
+                                        <select id="thu" name="thu">
+                                            @for (int i = 1; i < 7; i++)
+                                            {
+                                                if (i == Model.IdThu)
+                                                {
+                                                    <option value="@i" selected>Thứ @(i+1)</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@i">Thứ @(i+1)</option>
+                                                }
+                                            }
+                                        </select>
+                                        -  &nbsp;
+                                        <select id="tiet" name="tiet">
+                                            @for (int i = 1; i < 10; i++)
+                                            {
+                                                if (i == Model.IdTiet)
+                                                {
+                                                    <option value="@i" selected>Tiết @i</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@i">Tiết @i</option>
+                                                }
+                                            }
+                                        </select> -  &nbsp;
+                                        <select id="idroom" name="idroom">
+                                            @foreach (var room in listRoom)
+                                            {
+                                                if (Model.IdPhongHoc == room.IdPhongHoc)
+                                                {
+                                                    <option value="@room.IdPhongHoc" selected>Phòng @room.TenPhongHoc</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@room.IdPhongHoc">Phòng @room.TenPhongHoc</option>
+                                                }
+                                            }
+                                        </select>
+                                    </p>
+                                    <p>
+                                        @Html.ValidationSummary(true, null, new { @class = "text-danger " })
+                                    </p>
+                                </div>
+                                <div class="modal-footer justify-content-center">
+                                    <a  class="btn btn-default" href="@Url.ActionLink("ThoiKhoaBieu","Teacher",new { hocki = hocki, namhoc = namhoc })" >Quay lại</a>
+
+                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

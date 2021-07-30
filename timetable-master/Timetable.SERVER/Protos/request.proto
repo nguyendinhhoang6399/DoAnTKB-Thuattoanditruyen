@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option csharp_namespace = "Timetable.SERVER.Protos";
+
+package request;
+
+message RequestID{
+	int32 id = 1;
+}
+
+message RequestMaSo{
+	string maso = 1;
+}
+
+message RequestGD{
+	int32 id = 1;
+	string maso =2;
+	int32 hocki=3;
+	string namhoc =4;
+}
+
+//Login
+message RequestLogin{
+	string username =1;
+	string password =2;
+}
+message StatusResponse{
+	string StatusMessage=1;
+	bool Status=2;
+	int32 StatusCode=3;
+}

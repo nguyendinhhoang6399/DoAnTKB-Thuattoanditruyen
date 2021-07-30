@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+option csharp_namespace = "Timetable.SERVER.Protos";
+
+import "google/protobuf/empty.proto";
+import "protos/request.proto";
+import "protos/canbo.proto";
+import "protos/donvi.proto";
+
+package congtac;
+
+service CongTac{
+  rpc DSChucVu (google.protobuf.Empty) returns (DanhSachChucVu);
+  rpc DSCongTacCB (request.RequestID) returns (DanhSachCongTac);
+  rpc DSCongTacDV (request.RequestID) returns (DanhSachCongTac);
+  rpc DSCongTacCV (request.RequestID) returns (DanhSachCongTac);
+  rpc insertCongTac (CongTacData) returns (request.StatusResponse);
+    rpc updateCongTac (CongTacData) returns (request.StatusResponse);
+    rpc deleteCongTac (request.RequestID) returns (request.StatusResponse);
+}
+
+message ChucVuData{
+	int32 ma_chuc_vu =1;
+	string ten_chuc_vu = 2;
+	string mo_ta = 3;
+}
+
+message CongTacData{
+	int32 ma_cong_tac = 1;
+	ChucVuData chucvu = 2;
+	canbo.CanBoData canbos = 3;
+	donvi.DonViData donvis = 4;
+	string ngayBD = 5;
+	string ngayKT = 6;
+}
+
+message DanhSachChucVu{
+	repeated ChucVuData listChucVu = 1;
+}
+message DanhSachCongTac{
+	repeated CongTacData listCongTac = 1;
+}

@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+option csharp_namespace = "Timetable.SERVER.Protos";
+
+import "google/protobuf/empty.proto";
+import "protos/request.proto";
+import "protos/khht.proto";
+package giangday;
+
+service GiangDay{
+	rpc DSGiangDay (google.protobuf.Empty) returns (DanhSachGiangDay);
+	rpc DSGiangDayHK (khht.requestIDHK) returns (DanhSachGiangDay);
+	rpc DSGiangDayHP (request.RequestMaSo) returns (DanhSachGiangDay);
+	rpc DSGiangDayGV (request.RequestID) returns (DanhSachGiangDay);
+	rpc insertGiangDay (GiangDayData) returns (request.StatusResponse);
+    rpc updateGiangDay (GiangDayData) returns (request.StatusResponse);
+    rpc deleteGiangDay (request.RequestGD) returns (request.StatusResponse);
+}
+
+message GiangDayData{
+	int32 id_can_bo = 1;
+	string ma_hoc_phan = 2;
+	int32 so_nhom_giang_day = 3;
+	int32 id_hoc_ki = 4;
+}
+
+message DanhSachGiangDay{
+	repeated GiangDayData listGiangDay = 1;
+}

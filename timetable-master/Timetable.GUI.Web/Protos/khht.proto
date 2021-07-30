@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+option csharp_namespace = "Timetable.SERVER.Protos";
+import "google/protobuf/empty.proto";
+import "protos/request.proto";
+
+package khht;
+
+service KHHT{
+	rpc DSTongHopKHHT (requestIDHK) returns (DanhSachKHHT);
+	rpc GetAllKhhtSV (request.RequestMaSo) returns (DanhSachKHHT);
+	rpc FindKhhtSV (request.RequestID) returns (KHHT_SinhVien);
+	rpc GetKhhtSV (requestKHTTSV) returns (DanhSachKHHT);
+	rpc InsertKHHT (KHHT_SinhVien) returns (request.StatusResponse);
+	rpc UpdateKHHT (KHHT_SinhVien) returns (request.StatusResponse);
+	rpc DeleteKHHT (request.RequestID) returns (request.StatusResponse);
+	rpc SearchKHHT (RequestSearchKHHT) returns (DanhSachKHHT);
+}
+
+message KHHTData{
+	int32 id_thkhht = 1;
+	string ma_hoc_phan = 2;
+	string ten_hoc_phan = 3;
+	int32 so_tin_chi = 4;
+	int32 so_tiet_moi_tuan = 5;
+	int32 so_buoi_moi_tuan = 6;
+	int32 si_so = 7;
+	int32 so_luong_dk = 8;
+	int32 id_hoc_ki = 9;
+}
+
+message KHHT_SinhVien{
+	int32 id_khht = 1;
+	string masinhvien = 2;
+	string mahocphan = 3;
+	int32 caithien = 4;
+	int32 hocki = 5;
+}
+message DanhSachKHHT{
+	repeated KHHTData listKHHT = 1;
+}
+
+message requestIDHK{
+	 int32 hoc_ki = 1;
+	 string nam_hoc =2;
+
+
+}message requestKHTTSV{
+	requestIDHK hoc_ki = 1;
+	request.RequestMaSo MSSV =2;
+}
+
+message RequestSearchKHHT{
+	string masinhvien = 1;
+	string mahocphan = 2;
+}

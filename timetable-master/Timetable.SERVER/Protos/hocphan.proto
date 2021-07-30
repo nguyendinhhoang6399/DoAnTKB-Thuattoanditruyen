@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+option csharp_namespace = "Timetable.SERVER.Protos";
+
+import "google/protobuf/empty.proto";
+import "protos/request.proto";
+
+package hocphan;
+
+service HocPhan{
+    rpc DSHocPhan (google.protobuf.Empty) returns (DanhSachHocPhan);
+    rpc GetHocPhan (RequestMaHP) returns (HocPhanData);
+    rpc GetHocPhanByIDNhom (request.RequestID) returns (HocPhanData);
+    rpc insertHocPhan (HocPhanData) returns (request.StatusResponse);
+    rpc updateHocPhan (HocPhanData) returns (request.StatusResponse);
+    rpc deleteHocPhan (request.RequestMaSo) returns (request.StatusResponse);
+}
+message HocPhanData{
+	  string ma_hoc_phan = 1;
+      string ten_hoc_phan = 2;
+      int32 so_tin_chi = 3;
+      int32 so_tiet_lt = 4;
+      int32 so_tiet_th = 5;
+      string tien_quyet = 6;
+      int32 is_scheduled = 7;
+      int32 bat_buoc = 8;
+      int32 ma_don_vi = 9;
+      string hoc_ki = 10;
+      int32 so_tiet_moi_tuan =11;
+      int32 so_buoi_moi_tuan=12;
+      int32 si_so=13;
+      int32 id_loai_ph =14;
+}
+
+message DanhSachHocPhan{
+	repeated HocPhanData listHocPhan = 1;
+}
+
+message RequestMaHP{
+    string ma_hoc_phan =1;
+}

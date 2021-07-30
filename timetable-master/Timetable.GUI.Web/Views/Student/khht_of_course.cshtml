@@ -1,0 +1,110 @@
+﻿@model Timetable.SERVER.Protos.DanhSachKHHT
+@using Timetable.GUI.Web.Service
+@{
+    Layout = "_Layout";
+}
+<div class="content-header">
+    <div class="container">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark"> Kế hoạch học tập toàn khóa</h1>
+            </div><!-- /.col -->
+
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Mã học phần</th>
+                                    <th>Tên học phần</th>
+                                    <th>Số tín chỉ</th>
+                                    <th>Năm học</th>
+                                    <th>Học kì</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.ListKHHT)
+                                {
+                                    var hocki = TimeslotService.getHocKi(item.IdHocKi);
+                                    <tr>
+                                        <td>@item.MaHocPhan</td>
+                                        <td>@item.TenHocPhan</td>
+                                        <td>@item.SoTinChi</td>
+                                        <td>@hocki.NamHoc</td>
+                                        <td>@hocki.HocKi_</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Datatable{
+    <!-- DataTables -->
+    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <!-- AdminLTE App -->
+    <!-- AdminLTE for demo purposes -->
+    <script src="/dist/js/demo.js"></script>
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "language": {
+                    "lengthMenu": "Hiển thị _MENU_",
+                    "zeroRecords": "Không tìm thấy",
+                    "info": "Hiển thị trang _PAGE_/_PAGES_",
+                    "infoEmpty": "Không có dữ liệu",
+                    "emptyTable": "Không có dữ liệu",
+                    "infoFiltered": "(tìm kiếm trong tất cả _MAX_ mục)",
+                    "sSearch": "Tìm kiếm",
+                    "paginate": {
+                        "first": "Đầu",
+                        "last": "Cuối",
+                        "next": "Sau",
+                        "previous": "Trước"
+                    }
+                }
+            });
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+                "language": {
+                    "lengthMenu": "Hiển thị _MENU_",
+                    "zeroRecords": "Không tìm thấy",
+                    "info": "Hiển thị trang _PAGE_/_PAGES_",
+                    "infoEmpty": "Không có dữ liệu",
+                    "emptyTable": "Không có dữ liệu",
+                    "infoFiltered": "(tìm kiếm trong tất cả _MAX_ mục)",
+                    "sSearch": "Tìm kiếm",
+                    "paginate": {
+                        "first": "Đầu",
+                        "last": "Cuối",
+                        "next": "Sau",
+                        "previous": "Trước"
+                    }
+                }
+            });
+        });
+       
+    </script>
+}
